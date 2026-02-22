@@ -1,166 +1,191 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 230" width="800" height="230">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 310" width="800" height="310">
   <style>
     .node { fill: #1e293b; stroke-width: 2; }
     .conn { fill: none; stroke: #334155; stroke-width: 1.2; }
     .label { fill: #64748b; font-family: sans-serif; font-size: 11px; text-anchor: middle; }
     .phase { font-family: sans-serif; font-size: 10px; text-anchor: middle; letter-spacing: 1px; }
+    .act { font-family: sans-serif; font-size: 8px; fill: #7dd3fc; }
+    .loss-val { font-family: sans-serif; font-size: 9px; fill: #ef4444; text-anchor: start; }
+    .particle-fwd { fill: #38bdf8; }
+    .particle-bp { fill: #f97316; }
+    .loss-axis { fill: none; stroke: #475569; stroke-width: 1; }
+    .loss-line { fill: none; stroke: #ef4444; stroke-width: 1.5; stroke-linecap: round; }
+    .loss-text { font-family: sans-serif; font-size: 8px; fill: #64748b; }
 
     /* Phase labels */
-    @keyframes showForward {
-      0%, 3% { opacity: 0; }
-      6%, 38% { opacity: 1; }
-      42%, 100% { opacity: 0; }
-    }
-    @keyframes showBackprop {
-      0%, 50% { opacity: 0; }
-      54%, 86% { opacity: 1; }
-      90%, 100% { opacity: 0; }
-    }
-    .phase-fwd { fill: #38bdf8; animation: showForward 8s ease-in-out infinite; opacity: 0; }
-    .phase-bp { fill: #f97316; animation: showBackprop 8s ease-in-out infinite; opacity: 0; }
+    @keyframes showFwd { 0%,3%{opacity:0}6%,38%{opacity:1}42%,100%{opacity:0} }
+    @keyframes showBp { 0%,48%{opacity:0}52%,84%{opacity:1}88%,100%{opacity:0} }
+    .phase-fwd { fill: #38bdf8; animation: showFwd 8s ease-in-out infinite; opacity: 0; }
+    .phase-bp { fill: #f97316; animation: showBp 8s ease-in-out infinite; opacity: 0; }
 
-    /* Node glow: forward (blue) then backprop (orange) */
-    @keyframes glow0 {
-      0%, 4% { stroke: #475569; filter: none; }
-      6%, 14% { stroke: #38bdf8; filter: url(#glow-blue); }
-      16%, 74% { stroke: #475569; filter: none; }
-      76%, 84% { stroke: #f97316; filter: url(#glow-orange); }
-      86%, 100% { stroke: #475569; filter: none; }
-    }
-    @keyframes glow1 {
-      0%, 12% { stroke: #475569; filter: none; }
-      14%, 22% { stroke: #38bdf8; filter: url(#glow-blue); }
-      24%, 66% { stroke: #475569; filter: none; }
-      68%, 76% { stroke: #f97316; filter: url(#glow-orange); }
-      78%, 100% { stroke: #475569; filter: none; }
-    }
-    @keyframes glow2 {
-      0%, 20% { stroke: #475569; filter: none; }
-      22%, 30% { stroke: #38bdf8; filter: url(#glow-blue); }
-      32%, 58% { stroke: #475569; filter: none; }
-      60%, 68% { stroke: #f97316; filter: url(#glow-orange); }
-      70%, 100% { stroke: #475569; filter: none; }
-    }
-    @keyframes glow3 {
-      0%, 28% { stroke: #475569; filter: none; }
-      30%, 38% { stroke: #38bdf8; filter: url(#glow-blue); }
-      40%, 50% { stroke: #475569; filter: none; }
-      52%, 60% { stroke: #f97316; filter: url(#glow-orange); }
-      62%, 100% { stroke: #475569; filter: none; }
-    }
+    /* Node glow */
+    @keyframes g0 { 0%,4%{stroke:#475569;filter:none}6%,14%{stroke:#38bdf8;filter:url(#gb)}16%,74%{stroke:#475569;filter:none}76%,84%{stroke:#f97316;filter:url(#go)}86%,100%{stroke:#475569;filter:none} }
+    @keyframes g1 { 0%,12%{stroke:#475569;filter:none}14%,22%{stroke:#38bdf8;filter:url(#gb)}24%,66%{stroke:#475569;filter:none}68%,76%{stroke:#f97316;filter:url(#go)}78%,100%{stroke:#475569;filter:none} }
+    @keyframes g2 { 0%,20%{stroke:#475569;filter:none}22%,30%{stroke:#38bdf8;filter:url(#gb)}32%,58%{stroke:#475569;filter:none}60%,68%{stroke:#f97316;filter:url(#go)}70%,100%{stroke:#475569;filter:none} }
+    @keyframes g3 { 0%,28%{stroke:#475569;filter:none}30%,38%{stroke:#38bdf8;filter:url(#gb)}40%,50%{stroke:#475569;filter:none}52%,60%{stroke:#f97316;filter:url(#go)}62%,100%{stroke:#475569;filter:none} }
+    .l0{animation:g0 8s ease-in-out infinite}.l1{animation:g1 8s ease-in-out infinite}.l2{animation:g2 8s ease-in-out infinite}.l3{animation:g3 8s ease-in-out infinite}
 
-    .l0 { animation: glow0 8s ease-in-out infinite; }
-    .l1 { animation: glow1 8s ease-in-out infinite; }
-    .l2 { animation: glow2 8s ease-in-out infinite; }
-    .l3 { animation: glow3 8s ease-in-out infinite; }
+    /* Connection pulses — thick (weight up) and thin (weight down) variants for backprop */
+    @keyframes p01 { 0%,6%{stroke:#334155;stroke-width:1.2}8%,16%{stroke:#38bdf8;stroke-width:1.8}18%,68%{stroke:#334155;stroke-width:1.2}70%,78%{stroke:#f97316;stroke-width:2.4}80%,100%{stroke:#334155;stroke-width:1.2} }
+    @keyframes p01t { 0%,6%{stroke:#334155;stroke-width:1.2}8%,16%{stroke:#38bdf8;stroke-width:1.8}18%,68%{stroke:#334155;stroke-width:1.2}70%,78%{stroke:#f97316;stroke-width:0.4}80%,100%{stroke:#334155;stroke-width:1.2} }
+    @keyframes p12 { 0%,14%{stroke:#334155;stroke-width:1.2}16%,24%{stroke:#38bdf8;stroke-width:1.8}26%,60%{stroke:#334155;stroke-width:1.2}62%,70%{stroke:#f97316;stroke-width:2.4}72%,100%{stroke:#334155;stroke-width:1.2} }
+    @keyframes p12t { 0%,14%{stroke:#334155;stroke-width:1.2}16%,24%{stroke:#38bdf8;stroke-width:1.8}26%,60%{stroke:#334155;stroke-width:1.2}62%,70%{stroke:#f97316;stroke-width:0.4}72%,100%{stroke:#334155;stroke-width:1.2} }
+    @keyframes p23 { 0%,22%{stroke:#334155;stroke-width:1.2}24%,32%{stroke:#38bdf8;stroke-width:1.8}34%,52%{stroke:#334155;stroke-width:1.2}54%,62%{stroke:#f97316;stroke-width:2.4}64%,100%{stroke:#334155;stroke-width:1.2} }
+    @keyframes p23t { 0%,22%{stroke:#334155;stroke-width:1.2}24%,32%{stroke:#38bdf8;stroke-width:1.8}34%,52%{stroke:#334155;stroke-width:1.2}54%,62%{stroke:#f97316;stroke-width:0.4}64%,100%{stroke:#334155;stroke-width:1.2} }
+    .c01{animation:p01 8s ease-in-out infinite}.c01t{animation:p01t 8s ease-in-out infinite}
+    .c12{animation:p12 8s ease-in-out infinite}.c12t{animation:p12t 8s ease-in-out infinite}
+    .c23{animation:p23 8s ease-in-out infinite}.c23t{animation:p23t 8s ease-in-out infinite}
 
-    /* Connection pulses: forward (blue) then backprop (orange) */
-    @keyframes pulse01 {
-      0%, 6% { stroke: #334155; stroke-width: 1.2; }
-      8%, 16% { stroke: #38bdf8; stroke-width: 1.8; }
-      18%, 68% { stroke: #334155; stroke-width: 1.2; }
-      70%, 78% { stroke: #f97316; stroke-width: 1.8; }
-      80%, 100% { stroke: #334155; stroke-width: 1.2; }
-    }
-    @keyframes pulse12 {
-      0%, 14% { stroke: #334155; stroke-width: 1.2; }
-      16%, 24% { stroke: #38bdf8; stroke-width: 1.8; }
-      26%, 60% { stroke: #334155; stroke-width: 1.2; }
-      62%, 70% { stroke: #f97316; stroke-width: 1.8; }
-      72%, 100% { stroke: #334155; stroke-width: 1.2; }
-    }
-    @keyframes pulse23 {
-      0%, 22% { stroke: #334155; stroke-width: 1.2; }
-      24%, 32% { stroke: #38bdf8; stroke-width: 1.8; }
-      34%, 52% { stroke: #334155; stroke-width: 1.2; }
-      54%, 62% { stroke: #f97316; stroke-width: 1.8; }
-      64%, 100% { stroke: #334155; stroke-width: 1.2; }
-    }
+    /* Forward particles */
+    @keyframes f01a{0%,5%{opacity:0;transform:translate(0,0)}6%{opacity:1;transform:translate(0,0)}14%{opacity:1;transform:translate(180px,30px)}15%,100%{opacity:0;transform:translate(0,0)}}
+    @keyframes f01b{0%,5%{opacity:0;transform:translate(0,0)}6%{opacity:1;transform:translate(0,0)}14%{opacity:1;transform:translate(180px,-135px)}15%,100%{opacity:0;transform:translate(0,0)}}
+    @keyframes f12a{0%,13%{opacity:0;transform:translate(0,0)}14%{opacity:1;transform:translate(0,0)}22%{opacity:1;transform:translate(180px,95px)}23%,100%{opacity:0;transform:translate(0,0)}}
+    @keyframes f12b{0%,13%{opacity:0;transform:translate(0,0)}14%{opacity:1;transform:translate(0,0)}22%{opacity:1;transform:translate(180px,-140px)}23%,100%{opacity:0;transform:translate(0,0)}}
+    @keyframes f23a{0%,21%{opacity:0;transform:translate(0,0)}22%{opacity:1;transform:translate(0,0)}30%{opacity:1;transform:translate(180px,45px)}31%,100%{opacity:0;transform:translate(0,0)}}
+    @keyframes f23b{0%,21%{opacity:0;transform:translate(0,0)}22%{opacity:1;transform:translate(0,0)}30%{opacity:1;transform:translate(180px,10px)}31%,100%{opacity:0;transform:translate(0,0)}}
+    .f01a{animation:f01a 8s ease-in-out infinite;opacity:0}.f01b{animation:f01b 8s ease-in-out infinite;opacity:0}
+    .f12a{animation:f12a 8s ease-in-out infinite;opacity:0}.f12b{animation:f12b 8s ease-in-out infinite;opacity:0}
+    .f23a{animation:f23a 8s ease-in-out infinite;opacity:0}.f23b{animation:f23b 8s ease-in-out infinite;opacity:0}
 
-    .c01 { animation: pulse01 8s ease-in-out infinite; }
-    .c12 { animation: pulse12 8s ease-in-out infinite; }
-    .c23 { animation: pulse23 8s ease-in-out infinite; }
+    /* Backprop particles */
+    @keyframes b32a{0%,51%{opacity:0;transform:translate(0,0)}52%{opacity:1;transform:translate(0,0)}60%{opacity:1;transform:translate(-180px,-45px)}61%,100%{opacity:0;transform:translate(0,0)}}
+    @keyframes b32b{0%,51%{opacity:0;transform:translate(0,0)}52%{opacity:1;transform:translate(0,0)}60%{opacity:1;transform:translate(-180px,-10px)}61%,100%{opacity:0;transform:translate(0,0)}}
+    @keyframes b21a{0%,59%{opacity:0;transform:translate(0,0)}60%{opacity:1;transform:translate(0,0)}68%{opacity:1;transform:translate(-180px,-95px)}69%,100%{opacity:0;transform:translate(0,0)}}
+    @keyframes b21b{0%,59%{opacity:0;transform:translate(0,0)}60%{opacity:1;transform:translate(0,0)}68%{opacity:1;transform:translate(-180px,140px)}69%,100%{opacity:0;transform:translate(0,0)}}
+    @keyframes b10a{0%,67%{opacity:0;transform:translate(0,0)}68%{opacity:1;transform:translate(0,0)}76%{opacity:1;transform:translate(-180px,-30px)}77%,100%{opacity:0;transform:translate(0,0)}}
+    @keyframes b10b{0%,67%{opacity:0;transform:translate(0,0)}68%{opacity:1;transform:translate(0,0)}76%{opacity:1;transform:translate(-180px,135px)}77%,100%{opacity:0;transform:translate(0,0)}}
+    .b32a{animation:b32a 8s ease-in-out infinite;opacity:0}.b32b{animation:b32b 8s ease-in-out infinite;opacity:0}
+    .b21a{animation:b21a 8s ease-in-out infinite;opacity:0}.b21b{animation:b21b 8s ease-in-out infinite;opacity:0}
+    .b10a{animation:b10a 8s ease-in-out infinite;opacity:0}.b10b{animation:b10b 8s ease-in-out infinite;opacity:0}
+
+    /* Activation labels per layer */
+    @keyframes a0{0%,5%{opacity:0}7%,14%{opacity:1}16%,100%{opacity:0}}
+    @keyframes a1{0%,13%{opacity:0}15%,22%{opacity:1}24%,100%{opacity:0}}
+    @keyframes a2{0%,21%{opacity:0}23%,30%{opacity:1}32%,100%{opacity:0}}
+    @keyframes a3{0%,29%{opacity:0}31%,38%{opacity:1}40%,100%{opacity:0}}
+    @keyframes lv{0%,33%{opacity:0}36%,55%{opacity:1}58%,100%{opacity:0}}
+    .a0{animation:a0 8s ease-in-out infinite;opacity:0}.a1{animation:a1 8s ease-in-out infinite;opacity:0}
+    .a2{animation:a2 8s ease-in-out infinite;opacity:0}.a3{animation:a3 8s ease-in-out infinite;opacity:0}
+    .lv{animation:lv 8s ease-in-out infinite;opacity:0}
+
+    /* Loss curve */
+    @keyframes drawLoss{0%,5%{stroke-dashoffset:180}40%{stroke-dashoffset:25}85%,93%{stroke-dashoffset:0}100%{stroke-dashoffset:180}}
+    @keyframes showChart{0%,3%{opacity:0}6%,90%{opacity:1}95%,100%{opacity:0}}
+    .loss-chart{animation:showChart 8s ease-in-out infinite;opacity:0}
+    .loss-draw{stroke-dasharray:180;stroke-dashoffset:180;animation:drawLoss 8s ease-in-out infinite}
   </style>
 
   <defs>
-    <filter id="glow-blue">
-      <feGaussianBlur in="SourceGraphic" stdDeviation="3"/>
-    </filter>
-    <filter id="glow-orange">
-      <feGaussianBlur in="SourceGraphic" stdDeviation="3"/>
-    </filter>
+    <filter id="gb"><feGaussianBlur in="SourceGraphic" stdDeviation="3"/></filter>
+    <filter id="go"><feGaussianBlur in="SourceGraphic" stdDeviation="3"/></filter>
   </defs>
 
-  <!-- Connections: Input -> Hidden1 -->
+  <!-- ===== CONNECTIONS ===== -->
+  <!-- Input -> Hidden1 (alternating thick/thin weight updates) -->
   <line class="conn c01" x1="120" y1="50" x2="300" y2="35"/>
-  <line class="conn c01" x1="120" y1="50" x2="300" y2="80"/>
+  <line class="conn c01t" x1="120" y1="50" x2="300" y2="80"/>
   <line class="conn c01" x1="120" y1="50" x2="300" y2="130"/>
-  <line class="conn c01" x1="120" y1="50" x2="300" y2="175"/>
-  <line class="conn c01" x1="120" y1="110" x2="300" y2="35"/>
+  <line class="conn c01t" x1="120" y1="50" x2="300" y2="175"/>
+  <line class="conn c01t" x1="120" y1="110" x2="300" y2="35"/>
   <line class="conn c01" x1="120" y1="110" x2="300" y2="80"/>
-  <line class="conn c01" x1="120" y1="110" x2="300" y2="130"/>
+  <line class="conn c01t" x1="120" y1="110" x2="300" y2="130"/>
   <line class="conn c01" x1="120" y1="110" x2="300" y2="175"/>
   <line class="conn c01" x1="120" y1="170" x2="300" y2="35"/>
-  <line class="conn c01" x1="120" y1="170" x2="300" y2="80"/>
+  <line class="conn c01t" x1="120" y1="170" x2="300" y2="80"/>
   <line class="conn c01" x1="120" y1="170" x2="300" y2="130"/>
-  <line class="conn c01" x1="120" y1="170" x2="300" y2="175"/>
-
-  <!-- Connections: Hidden1 -> Hidden2 -->
+  <line class="conn c01t" x1="120" y1="170" x2="300" y2="175"/>
+  <!-- Hidden1 -> Hidden2 -->
   <line class="conn c12" x1="300" y1="35" x2="480" y2="35"/>
-  <line class="conn c12" x1="300" y1="35" x2="480" y2="80"/>
+  <line class="conn c12t" x1="300" y1="35" x2="480" y2="80"/>
   <line class="conn c12" x1="300" y1="35" x2="480" y2="130"/>
-  <line class="conn c12" x1="300" y1="35" x2="480" y2="175"/>
-  <line class="conn c12" x1="300" y1="80" x2="480" y2="35"/>
+  <line class="conn c12t" x1="300" y1="35" x2="480" y2="175"/>
+  <line class="conn c12t" x1="300" y1="80" x2="480" y2="35"/>
   <line class="conn c12" x1="300" y1="80" x2="480" y2="80"/>
-  <line class="conn c12" x1="300" y1="80" x2="480" y2="130"/>
+  <line class="conn c12t" x1="300" y1="80" x2="480" y2="130"/>
   <line class="conn c12" x1="300" y1="80" x2="480" y2="175"/>
   <line class="conn c12" x1="300" y1="130" x2="480" y2="35"/>
-  <line class="conn c12" x1="300" y1="130" x2="480" y2="80"/>
+  <line class="conn c12t" x1="300" y1="130" x2="480" y2="80"/>
   <line class="conn c12" x1="300" y1="130" x2="480" y2="130"/>
-  <line class="conn c12" x1="300" y1="130" x2="480" y2="175"/>
-  <line class="conn c12" x1="300" y1="175" x2="480" y2="35"/>
+  <line class="conn c12t" x1="300" y1="130" x2="480" y2="175"/>
+  <line class="conn c12t" x1="300" y1="175" x2="480" y2="35"/>
   <line class="conn c12" x1="300" y1="175" x2="480" y2="80"/>
-  <line class="conn c12" x1="300" y1="175" x2="480" y2="130"/>
+  <line class="conn c12t" x1="300" y1="175" x2="480" y2="130"/>
   <line class="conn c12" x1="300" y1="175" x2="480" y2="175"/>
-
-  <!-- Connections: Hidden2 -> Output -->
+  <!-- Hidden2 -> Output -->
   <line class="conn c23" x1="480" y1="35" x2="660" y2="80"/>
-  <line class="conn c23" x1="480" y1="35" x2="660" y2="140"/>
+  <line class="conn c23t" x1="480" y1="35" x2="660" y2="140"/>
   <line class="conn c23" x1="480" y1="80" x2="660" y2="80"/>
-  <line class="conn c23" x1="480" y1="80" x2="660" y2="140"/>
-  <line class="conn c23" x1="480" y1="130" x2="660" y2="80"/>
+  <line class="conn c23t" x1="480" y1="80" x2="660" y2="140"/>
+  <line class="conn c23t" x1="480" y1="130" x2="660" y2="80"/>
   <line class="conn c23" x1="480" y1="130" x2="660" y2="140"/>
-  <line class="conn c23" x1="480" y1="175" x2="660" y2="80"/>
+  <line class="conn c23t" x1="480" y1="175" x2="660" y2="80"/>
   <line class="conn c23" x1="480" y1="175" x2="660" y2="140"/>
 
-  <!-- Nodes: Input layer -->
+  <!-- ===== NODES ===== -->
   <circle class="node l0" cx="120" cy="50" r="12"/>
   <circle class="node l0" cx="120" cy="110" r="12"/>
   <circle class="node l0" cx="120" cy="170" r="12"/>
-
-  <!-- Nodes: Hidden layer 1 -->
   <circle class="node l1" cx="300" cy="35" r="12"/>
   <circle class="node l1" cx="300" cy="80" r="12"/>
   <circle class="node l1" cx="300" cy="130" r="12"/>
   <circle class="node l1" cx="300" cy="175" r="12"/>
-
-  <!-- Nodes: Hidden layer 2 -->
   <circle class="node l2" cx="480" cy="35" r="12"/>
   <circle class="node l2" cx="480" cy="80" r="12"/>
   <circle class="node l2" cx="480" cy="130" r="12"/>
   <circle class="node l2" cx="480" cy="175" r="12"/>
-
-  <!-- Nodes: Output layer -->
   <circle class="node l3" cx="660" cy="80" r="12"/>
   <circle class="node l3" cx="660" cy="140" r="12"/>
 
-  <!-- Layer labels -->
+  <!-- ===== ACTIVATION LABELS (appear inside nodes during forward pass) ===== -->
+  <text class="act a0" x="120" y="53" text-anchor="middle">0.8</text>
+  <text class="act a0" x="120" y="113" text-anchor="middle">0.5</text>
+  <text class="act a0" x="120" y="173" text-anchor="middle">0.3</text>
+  <text class="act a1" x="300" y="38" text-anchor="middle">0.7</text>
+  <text class="act a1" x="300" y="83" text-anchor="middle">0.9</text>
+  <text class="act a1" x="300" y="133" text-anchor="middle">0.4</text>
+  <text class="act a1" x="300" y="178" text-anchor="middle">0.6</text>
+  <text class="act a2" x="480" y="38" text-anchor="middle">0.8</text>
+  <text class="act a2" x="480" y="83" text-anchor="middle">0.3</text>
+  <text class="act a2" x="480" y="133" text-anchor="middle">0.7</text>
+  <text class="act a2" x="480" y="178" text-anchor="middle">0.5</text>
+  <text class="act a3" x="660" y="83" text-anchor="middle">0.9</text>
+  <text class="act a3" x="660" y="143" text-anchor="middle">0.2</text>
+
+  <!-- Loss value at output -->
+  <text class="loss-val lv" x="685" y="112">L=0.42</text>
+
+  <!-- ===== FORWARD PARTICLES (blue) ===== -->
+  <circle class="particle-fwd f01a" cx="120" cy="50" r="3"/>
+  <circle class="particle-fwd f01b" cx="120" cy="170" r="3"/>
+  <circle class="particle-fwd f12a" cx="300" cy="35" r="3"/>
+  <circle class="particle-fwd f12b" cx="300" cy="175" r="3"/>
+  <circle class="particle-fwd f23a" cx="480" cy="35" r="3"/>
+  <circle class="particle-fwd f23b" cx="480" cy="130" r="3"/>
+
+  <!-- ===== BACKPROP PARTICLES (orange) ===== -->
+  <circle class="particle-bp b32a" cx="660" cy="80" r="3"/>
+  <circle class="particle-bp b32b" cx="660" cy="140" r="3"/>
+  <circle class="particle-bp b21a" cx="480" cy="130" r="3"/>
+  <circle class="particle-bp b21b" cx="480" cy="35" r="3"/>
+  <circle class="particle-bp b10a" cx="300" cy="80" r="3"/>
+  <circle class="particle-bp b10b" cx="300" cy="35" r="3"/>
+
+  <!-- ===== LOSS CURVE (bottom center) ===== -->
+  <g class="loss-chart" transform="translate(310, 235)">
+    <line class="loss-axis" x1="0" y1="0" x2="0" y2="50"/>
+    <line class="loss-axis" x1="0" y1="50" x2="160" y2="50"/>
+    <text class="loss-text" x="80" y="63" text-anchor="middle">epoch</text>
+    <text class="loss-text" x="-8" y="28" text-anchor="middle" transform="rotate(-90 -8 28)">loss</text>
+    <path class="loss-line loss-draw" d="M 5 5 C 20 8, 35 18, 50 28 C 65 36, 80 42, 100 45 C 115 47, 135 48, 155 48"/>
+  </g>
+
+  <!-- ===== LAYER LABELS ===== -->
   <text class="label" x="120" y="210">Input</text>
   <text class="label" x="300" y="210">Hidden 1</text>
   <text class="label" x="480" y="210">Hidden 2</text>
   <text class="label" x="660" y="210">Output</text>
 
-  <!-- Phase labels -->
+  <!-- ===== PHASE LABELS ===== -->
   <text class="phase phase-fwd" x="390" y="225">FORWARD PASS &#x2192;</text>
   <text class="phase phase-bp" x="390" y="225">&#x2190; BACKPROPAGATION</text>
 </svg>

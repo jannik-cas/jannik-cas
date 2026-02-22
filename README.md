@@ -11,7 +11,7 @@
 ---
 
 <p align="center">
-  <img src="assets/nn-animation.svg?v=2" alt="Neural Network Animation" width="700"/>
+  <img src="assets/nn-animation.svg?v=3" alt="Neural Network Animation" width="700"/>
 </p>
 
 <h3 align="center">Tools I Work With</h3>
