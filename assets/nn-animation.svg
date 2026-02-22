@@ -1,0 +1,161 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 220" width="800" height="220">
+  <style>
+    .node { fill: #1e293b; stroke-width: 2; }
+    .conn { fill: none; stroke: #334155; stroke-width: 1.2; }
+    .label { fill: #64748b; font-family: sans-serif; font-size: 11px; text-anchor: middle; }
+
+    /* Node glow animation per layer */
+    @keyframes glow0 {
+      0%, 10% { stroke: #475569; filter: none; }
+      15%, 30% { stroke: #38bdf8; filter: url(#blur); }
+      35%, 100% { stroke: #475569; filter: none; }
+    }
+    @keyframes glow1 {
+      0%, 25% { stroke: #475569; filter: none; }
+      30%, 45% { stroke: #38bdf8; filter: url(#blur); }
+      50%, 100% { stroke: #475569; filter: none; }
+    }
+    @keyframes glow2 {
+      0%, 40% { stroke: #475569; filter: none; }
+      45%, 60% { stroke: #38bdf8; filter: url(#blur); }
+      65%, 100% { stroke: #475569; filter: none; }
+    }
+    @keyframes glow3 {
+      0%, 55% { stroke: #475569; filter: none; }
+      60%, 75% { stroke: #38bdf8; filter: url(#blur); }
+      80%, 100% { stroke: #475569; filter: none; }
+    }
+
+    .l0 { animation: glow0 4s ease-in-out infinite; }
+    .l1 { animation: glow1 4s ease-in-out infinite; }
+    .l2 { animation: glow2 4s ease-in-out infinite; }
+    .l3 { animation: glow3 4s ease-in-out infinite; }
+
+    /* Connection pulse animation per layer gap */
+    @keyframes pulse01 {
+      0%, 12% { stroke: #334155; stroke-width: 1.2; }
+      18%, 28% { stroke: #38bdf8; stroke-width: 1.8; }
+      34%, 100% { stroke: #334155; stroke-width: 1.2; }
+    }
+    @keyframes pulse12 {
+      0%, 28% { stroke: #334155; stroke-width: 1.2; }
+      34%, 44% { stroke: #38bdf8; stroke-width: 1.8; }
+      50%, 100% { stroke: #334155; stroke-width: 1.2; }
+    }
+    @keyframes pulse23 {
+      0%, 44% { stroke: #334155; stroke-width: 1.2; }
+      50%, 60% { stroke: #38bdf8; stroke-width: 1.8; }
+      66%, 100% { stroke: #334155; stroke-width: 1.2; }
+    }
+
+    .c01 { animation: pulse01 4s ease-in-out infinite; }
+    .c12 { animation: pulse12 4s ease-in-out infinite; }
+    .c23 { animation: pulse23 4s ease-in-out infinite; }
+
+    /* Data pulse dots traveling along connections */
+    @keyframes travel01 {
+      0%, 12% { opacity: 0; }
+      13% { opacity: 1; }
+      28% { opacity: 1; }
+      29%, 100% { opacity: 0; }
+    }
+    @keyframes travel12 {
+      0%, 28% { opacity: 0; }
+      29% { opacity: 1; }
+      44% { opacity: 1; }
+      45%, 100% { opacity: 0; }
+    }
+    @keyframes travel23 {
+      0%, 44% { opacity: 0; }
+      45% { opacity: 1; }
+      60% { opacity: 1; }
+      61%, 100% { opacity: 0; }
+    }
+
+    @keyframes moveRight {
+      0% { offset-distance: 0%; }
+      100% { offset-distance: 100%; }
+    }
+  </style>
+
+  <defs>
+    <filter id="blur">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="3"/>
+    </filter>
+  </defs>
+
+  <!-- Layer positions: x=120, 300, 480, 660 -->
+  <!-- Input layer (3 nodes): y=50, 110, 170 -->
+  <!-- Hidden1 (4 nodes): y=35, 80, 130, 175 -->
+  <!-- Hidden2 (4 nodes): y=35, 80, 130, 175 -->
+  <!-- Output (2 nodes): y=80, 140 -->
+
+  <!-- Connections: Input -> Hidden1 -->
+  <line class="conn c01" x1="120" y1="50" x2="300" y2="35"/>
+  <line class="conn c01" x1="120" y1="50" x2="300" y2="80"/>
+  <line class="conn c01" x1="120" y1="50" x2="300" y2="130"/>
+  <line class="conn c01" x1="120" y1="50" x2="300" y2="175"/>
+  <line class="conn c01" x1="120" y1="110" x2="300" y2="35"/>
+  <line class="conn c01" x1="120" y1="110" x2="300" y2="80"/>
+  <line class="conn c01" x1="120" y1="110" x2="300" y2="130"/>
+  <line class="conn c01" x1="120" y1="110" x2="300" y2="175"/>
+  <line class="conn c01" x1="120" y1="170" x2="300" y2="35"/>
+  <line class="conn c01" x1="120" y1="170" x2="300" y2="80"/>
+  <line class="conn c01" x1="120" y1="170" x2="300" y2="130"/>
+  <line class="conn c01" x1="120" y1="170" x2="300" y2="175"/>
+
+  <!-- Connections: Hidden1 -> Hidden2 -->
+  <line class="conn c12" x1="300" y1="35" x2="480" y2="35"/>
+  <line class="conn c12" x1="300" y1="35" x2="480" y2="80"/>
+  <line class="conn c12" x1="300" y1="35" x2="480" y2="130"/>
+  <line class="conn c12" x1="300" y1="35" x2="480" y2="175"/>
+  <line class="conn c12" x1="300" y1="80" x2="480" y2="35"/>
+  <line class="conn c12" x1="300" y1="80" x2="480" y2="80"/>
+  <line class="conn c12" x1="300" y1="80" x2="480" y2="130"/>
+  <line class="conn c12" x1="300" y1="80" x2="480" y2="175"/>
+  <line class="conn c12" x1="300" y1="130" x2="480" y2="35"/>
+  <line class="conn c12" x1="300" y1="130" x2="480" y2="80"/>
+  <line class="conn c12" x1="300" y1="130" x2="480" y2="130"/>
+  <line class="conn c12" x1="300" y1="130" x2="480" y2="175"/>
+  <line class="conn c12" x1="300" y1="175" x2="480" y2="35"/>
+  <line class="conn c12" x1="300" y1="175" x2="480" y2="80"/>
+  <line class="conn c12" x1="300" y1="175" x2="480" y2="130"/>
+  <line class="conn c12" x1="300" y1="175" x2="480" y2="175"/>
+
+  <!-- Connections: Hidden2 -> Output -->
+  <line class="conn c23" x1="480" y1="35" x2="660" y2="80"/>
+  <line class="conn c23" x1="480" y1="35" x2="660" y2="140"/>
+  <line class="conn c23" x1="480" y1="80" x2="660" y2="80"/>
+  <line class="conn c23" x1="480" y1="80" x2="660" y2="140"/>
+  <line class="conn c23" x1="480" y1="130" x2="660" y2="80"/>
+  <line class="conn c23" x1="480" y1="130" x2="660" y2="140"/>
+  <line class="conn c23" x1="480" y1="175" x2="660" y2="80"/>
+  <line class="conn c23" x1="480" y1="175" x2="660" y2="140"/>
+
+  <!-- Nodes: Input layer -->
+  <circle class="node l0" cx="120" cy="50" r="12"/>
+  <circle class="node l0" cx="120" cy="110" r="12"/>
+  <circle class="node l0" cx="120" cy="170" r="12"/>
+
+  <!-- Nodes: Hidden layer 1 -->
+  <circle class="node l1" cx="300" cy="35" r="12"/>
+  <circle class="node l1" cx="300" cy="80" r="12"/>
+  <circle class="node l1" cx="300" cy="130" r="12"/>
+  <circle class="node l1" cx="300" cy="175" r="12"/>
+
+  <!-- Nodes: Hidden layer 2 -->
+  <circle class="node l2" cx="480" cy="35" r="12"/>
+  <circle class="node l2" cx="480" cy="80" r="12"/>
+  <circle class="node l2" cx="480" cy="130" r="12"/>
+  <circle class="node l2" cx="480" cy="175" r="12"/>
+
+  <!-- Nodes: Output layer -->
+  <circle class="node l3" cx="660" cy="80" r="12"/>
+  <circle class="node l3" cx="660" cy="140" r="12"/>
+
+  <!-- Layer labels -->
+  <text class="label" x="120" y="210">Input</text>
+  <text class="label" x="300" y="210">Hidden 1</text>
+  <text class="label" x="480" y="210">Hidden 2</text>
+  <text class="label" x="660" y="210">Output</text>
+</svg>
