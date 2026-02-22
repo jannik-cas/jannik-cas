@@ -1,94 +1,95 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 220" width="800" height="220">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 230" width="800" height="230">
   <style>
     .node { fill: #1e293b; stroke-width: 2; }
     .conn { fill: none; stroke: #334155; stroke-width: 1.2; }
     .label { fill: #64748b; font-family: sans-serif; font-size: 11px; text-anchor: middle; }
+    .phase { font-family: sans-serif; font-size: 10px; text-anchor: middle; letter-spacing: 1px; }
 
-    /* Node glow animation per layer */
+    /* Phase labels */
+    @keyframes showForward {
+      0%, 3% { opacity: 0; }
+      6%, 38% { opacity: 1; }
+      42%, 100% { opacity: 0; }
+    }
+    @keyframes showBackprop {
+      0%, 50% { opacity: 0; }
+      54%, 86% { opacity: 1; }
+      90%, 100% { opacity: 0; }
+    }
+    .phase-fwd { fill: #38bdf8; animation: showForward 8s ease-in-out infinite; opacity: 0; }
+    .phase-bp { fill: #f97316; animation: showBackprop 8s ease-in-out infinite; opacity: 0; }
+
+    /* Node glow: forward (blue) then backprop (orange) */
     @keyframes glow0 {
-      0%, 10% { stroke: #475569; filter: none; }
-      15%, 30% { stroke: #38bdf8; filter: url(#blur); }
-      35%, 100% { stroke: #475569; filter: none; }
+      0%, 4% { stroke: #475569; filter: none; }
+      6%, 14% { stroke: #38bdf8; filter: url(#glow-blue); }
+      16%, 74% { stroke: #475569; filter: none; }
+      76%, 84% { stroke: #f97316; filter: url(#glow-orange); }
+      86%, 100% { stroke: #475569; filter: none; }
     }
     @keyframes glow1 {
-      0%, 25% { stroke: #475569; filter: none; }
-      30%, 45% { stroke: #38bdf8; filter: url(#blur); }
-      50%, 100% { stroke: #475569; filter: none; }
+      0%, 12% { stroke: #475569; filter: none; }
+      14%, 22% { stroke: #38bdf8; filter: url(#glow-blue); }
+      24%, 66% { stroke: #475569; filter: none; }
+      68%, 76% { stroke: #f97316; filter: url(#glow-orange); }
+      78%, 100% { stroke: #475569; filter: none; }
     }
     @keyframes glow2 {
-      0%, 40% { stroke: #475569; filter: none; }
-      45%, 60% { stroke: #38bdf8; filter: url(#blur); }
-      65%, 100% { stroke: #475569; filter: none; }
+      0%, 20% { stroke: #475569; filter: none; }
+      22%, 30% { stroke: #38bdf8; filter: url(#glow-blue); }
+      32%, 58% { stroke: #475569; filter: none; }
+      60%, 68% { stroke: #f97316; filter: url(#glow-orange); }
+      70%, 100% { stroke: #475569; filter: none; }
     }
     @keyframes glow3 {
-      0%, 55% { stroke: #475569; filter: none; }
-      60%, 75% { stroke: #38bdf8; filter: url(#blur); }
-      80%, 100% { stroke: #475569; filter: none; }
+      0%, 28% { stroke: #475569; filter: none; }
+      30%, 38% { stroke: #38bdf8; filter: url(#glow-blue); }
+      40%, 50% { stroke: #475569; filter: none; }
+      52%, 60% { stroke: #f97316; filter: url(#glow-orange); }
+      62%, 100% { stroke: #475569; filter: none; }
     }
 
-    .l0 { animation: glow0 4s ease-in-out infinite; }
-    .l1 { animation: glow1 4s ease-in-out infinite; }
-    .l2 { animation: glow2 4s ease-in-out infinite; }
-    .l3 { animation: glow3 4s ease-in-out infinite; }
+    .l0 { animation: glow0 8s ease-in-out infinite; }
+    .l1 { animation: glow1 8s ease-in-out infinite; }
+    .l2 { animation: glow2 8s ease-in-out infinite; }
+    .l3 { animation: glow3 8s ease-in-out infinite; }
 
-    /* Connection pulse animation per layer gap */
+    /* Connection pulses: forward (blue) then backprop (orange) */
     @keyframes pulse01 {
-      0%, 12% { stroke: #334155; stroke-width: 1.2; }
-      18%, 28% { stroke: #38bdf8; stroke-width: 1.8; }
-      34%, 100% { stroke: #334155; stroke-width: 1.2; }
+      0%, 6% { stroke: #334155; stroke-width: 1.2; }
+      8%, 16% { stroke: #38bdf8; stroke-width: 1.8; }
+      18%, 68% { stroke: #334155; stroke-width: 1.2; }
+      70%, 78% { stroke: #f97316; stroke-width: 1.8; }
+      80%, 100% { stroke: #334155; stroke-width: 1.2; }
     }
     @keyframes pulse12 {
-      0%, 28% { stroke: #334155; stroke-width: 1.2; }
-      34%, 44% { stroke: #38bdf8; stroke-width: 1.8; }
-      50%, 100% { stroke: #334155; stroke-width: 1.2; }
+      0%, 14% { stroke: #334155; stroke-width: 1.2; }
+      16%, 24% { stroke: #38bdf8; stroke-width: 1.8; }
+      26%, 60% { stroke: #334155; stroke-width: 1.2; }
+      62%, 70% { stroke: #f97316; stroke-width: 1.8; }
+      72%, 100% { stroke: #334155; stroke-width: 1.2; }
     }
     @keyframes pulse23 {
-      0%, 44% { stroke: #334155; stroke-width: 1.2; }
-      50%, 60% { stroke: #38bdf8; stroke-width: 1.8; }
-      66%, 100% { stroke: #334155; stroke-width: 1.2; }
+      0%, 22% { stroke: #334155; stroke-width: 1.2; }
+      24%, 32% { stroke: #38bdf8; stroke-width: 1.8; }
+      34%, 52% { stroke: #334155; stroke-width: 1.2; }
+      54%, 62% { stroke: #f97316; stroke-width: 1.8; }
+      64%, 100% { stroke: #334155; stroke-width: 1.2; }
     }
 
-    .c01 { animation: pulse01 4s ease-in-out infinite; }
-    .c12 { animation: pulse12 4s ease-in-out infinite; }
-    .c23 { animation: pulse23 4s ease-in-out infinite; }
-
-    /* Data pulse dots traveling along connections */
-    @keyframes travel01 {
-      0%, 12% { opacity: 0; }
-      13% { opacity: 1; }
-      28% { opacity: 1; }
-      29%, 100% { opacity: 0; }
-    }
-    @keyframes travel12 {
-      0%, 28% { opacity: 0; }
-      29% { opacity: 1; }
-      44% { opacity: 1; }
-      45%, 100% { opacity: 0; }
-    }
-    @keyframes travel23 {
-      0%, 44% { opacity: 0; }
-      45% { opacity: 1; }
-      60% { opacity: 1; }
-      61%, 100% { opacity: 0; }
-    }
-
-    @keyframes moveRight {
-      0% { offset-distance: 0%; }
-      100% { offset-distance: 100%; }
-    }
+    .c01 { animation: pulse01 8s ease-in-out infinite; }
+    .c12 { animation: pulse12 8s ease-in-out infinite; }
+    .c23 { animation: pulse23 8s ease-in-out infinite; }
   </style>
 
   <defs>
-    <filter id="blur">
+    <filter id="glow-blue">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="3"/>
+    </filter>
+    <filter id="glow-orange">
       <feGaussianBlur in="SourceGraphic" stdDeviation="3"/>
     </filter>
   </defs>
-
-  <!-- Layer positions: x=120, 300, 480, 660 -->
-  <!-- Input layer (3 nodes): y=50, 110, 170 -->
-  <!-- Hidden1 (4 nodes): y=35, 80, 130, 175 -->
-  <!-- Hidden2 (4 nodes): y=35, 80, 130, 175 -->
-  <!-- Output (2 nodes): y=80, 140 -->
 
   <!-- Connections: Input -> Hidden1 -->
   <line class="conn c01" x1="120" y1="50" x2="300" y2="35"/>
@@ -158,4 +159,8 @@
   <text class="label" x="300" y="210">Hidden 1</text>
   <text class="label" x="480" y="210">Hidden 2</text>
   <text class="label" x="660" y="210">Output</text>
+
+  <!-- Phase labels -->
+  <text class="phase phase-fwd" x="390" y="225">FORWARD PASS &#x2192;</text>
+  <text class="phase phase-bp" x="390" y="225">&#x2190; BACKPROPAGATION</text>
 </svg>
